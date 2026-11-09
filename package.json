@@ -8,6 +8,14 @@
   "types": "./dist/index.d.ts",
   "license": "UNLICENSED",
   "author": "mhraihan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhraihan/date-range-picker.git"
+  },
+  "homepage": "https://github.com/mhraihan/date-range-picker#readme",
+  "bugs": {
+    "url": "https://github.com/mhraihan/date-range-picker/issues"
+  },
   "keywords": [
     "date-range-picker",
     "react",
