@@ -1,6 +1,6 @@
 {
   "name": "@raihan004/date-range-picker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Reusable React date range picker and date filtering helpers for Shopify apps.",
   "type": "module",
   "main": "./dist/index.js",
@@ -29,7 +29,8 @@
     "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "dev": "vite",
