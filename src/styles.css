@@ -1,0 +1,401 @@
+/*
+ * @raihan004/date-range-picker
+ *
+ * Theme with CSS custom properties on :root (or any ancestor of <body>, since
+ * the popover is portalled to <body> by default), e.g.
+ *
+ *   :root { --csdrp-accent: #303030; --csdrp-range: #ebebeb; }
+ *
+ * --csdrp-accent / --csdrp-accent-hover / --csdrp-accent-text
+ * --csdrp-range / --csdrp-range-hover
+ * --csdrp-text / --csdrp-text-subdued / --csdrp-text-disabled
+ * --csdrp-surface / --csdrp-surface-hover
+ * --csdrp-border / --csdrp-divider / --csdrp-focus
+ * --csdrp-primary / --csdrp-primary-hover / --csdrp-primary-text
+ * --csdrp-radius / --csdrp-cell-size / --csdrp-z-index / --csdrp-font-size
+ */
+
+.csDateRangePicker {
+  position: relative;
+  display: inline-block;
+  max-inline-size: 100%;
+  color: var(--csdrp-text, #202223);
+}
+
+.csDateRangePicker button,
+.csDateRangePicker-popover button {
+  font: inherit;
+  margin: 0;
+}
+
+.csDateRangePicker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-inline-size: 100%;
+  min-block-size: 32px;
+  padding: 5px 11px;
+  color: var(--csdrp-text, #202223);
+  background: var(--csdrp-surface, #ffffff);
+  border: 1px solid var(--csdrp-border, #c9cccf);
+  border-radius: var(--csdrp-radius, 8px);
+  cursor: pointer;
+}
+
+.csDateRangePicker-trigger:hover:not(:disabled) {
+  background: var(--csdrp-surface-hover, #f6f6f7);
+}
+
+.csDateRangePicker-trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.csDateRangePicker-triggerIcon {
+  flex: none;
+}
+
+.csDateRangePicker-triggerLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Popover                                                             */
+/* ------------------------------------------------------------------ */
+
+.csDateRangePicker-popover {
+  --csdrp-_cell: var(--csdrp-cell-size, 36px);
+
+  /* Positioned by JS against the viewport; hidden until measured. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  z-index: var(--csdrp-z-index, 1000);
+  box-sizing: border-box;
+  inline-size: max-content;
+  overflow: auto;
+  overscroll-behavior: contain;
+  font-size: var(--csdrp-font-size, 14px);
+  line-height: 20px;
+  color: var(--csdrp-text, #202223);
+  background: var(--csdrp-surface, #ffffff);
+  border: 1px solid var(--csdrp-divider, #e3e3e3);
+  border-radius: calc(var(--csdrp-radius, 8px) + 4px);
+  box-shadow:
+    0 4px 6px -2px rgba(26, 26, 26, 0.2),
+    0 12px 24px -4px rgba(26, 26, 26, 0.12);
+}
+
+.csDateRangePicker-popover *,
+.csDateRangePicker-popover *::before,
+.csDateRangePicker-popover *::after {
+  box-sizing: border-box;
+}
+
+.csDateRangePicker-popover:focus {
+  outline: none;
+}
+
+.csDateRangePicker-popover :focus-visible {
+  outline: 2px solid var(--csdrp-focus, #005bd3);
+  outline-offset: 1px;
+}
+
+.csDateRangePicker-content {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Presets: vertical list beside the calendars. */
+.csDateRangePicker-presets {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 2px;
+  inline-size: 140px;
+  padding-inline-end: 16px;
+  border-inline-end: 1px solid var(--csdrp-divider, #e3e3e3);
+}
+
+.csDateRangePicker-preset {
+  padding: 6px 10px;
+  text-align: start;
+  color: var(--csdrp-text, #202223);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  border: none;
+  border-radius: var(--csdrp-radius, 8px);
+  cursor: pointer;
+}
+
+.csDateRangePicker-preset:hover {
+  background: var(--csdrp-surface-hover, #f6f6f7);
+}
+
+.csDateRangePicker-presetActive,
+.csDateRangePicker-presetActive:hover {
+  color: var(--csdrp-accent-text, #ffffff);
+  background: var(--csdrp-accent, #008060);
+}
+
+.csDateRangePicker-calendars {
+  display: flex;
+  gap: 24px;
+}
+
+.csDateRangePicker-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.csDateRangePicker-monthHeader {
+  display: grid;
+  grid-template-columns: 32px 1fr 32px;
+  align-items: center;
+  gap: 4px;
+}
+
+.csDateRangePicker-monthLabel {
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.csDateRangePicker-navSpacer {
+  inline-size: 32px;
+}
+
+.csDateRangePicker-iconButton {
+  inline-size: 32px;
+  block-size: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--csdrp-text, #202223);
+  background: transparent;
+  border: none;
+  border-radius: var(--csdrp-radius, 8px);
+  cursor: pointer;
+}
+
+.csDateRangePicker-iconButton:hover:not(:disabled) {
+  background: var(--csdrp-surface-hover, #f6f6f7);
+}
+
+.csDateRangePicker-iconButton:disabled {
+  color: var(--csdrp-text-disabled, #b5b5b5);
+  cursor: default;
+}
+
+/* ------------------------------------------------------------------ */
+/* Month grid                                                          */
+/* ------------------------------------------------------------------ */
+
+.csDateRangePicker-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.csDateRangePicker-row {
+  display: grid;
+  grid-template-columns: repeat(7, var(--csdrp-_cell));
+}
+
+.csDateRangePicker-weekday {
+  block-size: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--csdrp-text-subdued, #6d7175);
+  overflow: hidden;
+}
+
+.csDateRangePicker-cell,
+.csDateRangePicker-day {
+  block-size: var(--csdrp-_cell);
+}
+
+.csDateRangePicker-day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--csdrp-text, #202223);
+  background: transparent;
+  border: none;
+  border-radius: var(--csdrp-radius, 8px);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.csDateRangePicker-day:hover:not(:disabled) {
+  background: var(--csdrp-surface-hover, #f6f6f7);
+}
+
+.csDateRangePicker-day:disabled {
+  color: var(--csdrp-text-disabled, #b5b5b5);
+  cursor: not-allowed;
+}
+
+.csDateRangePicker-dayToday::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 5px;
+  inline-size: 4px;
+  block-size: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Continuous range strip with rounded ends at week / month edges. */
+.csDateRangePicker-dayInRange,
+.csDateRangePicker-dayInRange:hover:not(:disabled) {
+  background: var(--csdrp-range, #e3f1e8);
+  border-radius: 0;
+}
+
+.csDateRangePicker-dayPreview.csDateRangePicker-dayInRange:hover:not(:disabled) {
+  background: var(--csdrp-range-hover, #c5e2d1);
+}
+
+.csDateRangePicker-dayInRange:first-child,
+.csDateRangePicker-dayInRange.csDateRangePicker-dayMonthStart,
+.csDateRangePicker-dayRangeStart {
+  border-start-start-radius: var(--csdrp-radius, 8px);
+  border-end-start-radius: var(--csdrp-radius, 8px);
+}
+
+.csDateRangePicker-dayInRange:last-child,
+.csDateRangePicker-dayInRange.csDateRangePicker-dayMonthEnd,
+.csDateRangePicker-dayRangeEnd {
+  border-start-end-radius: var(--csdrp-radius, 8px);
+  border-end-end-radius: var(--csdrp-radius, 8px);
+}
+
+.csDateRangePicker-daySelected,
+.csDateRangePicker-daySelected:hover:not(:disabled) {
+  color: var(--csdrp-accent-text, #ffffff);
+  background: var(--csdrp-accent, #008060);
+}
+
+.csDateRangePicker-daySelected:hover:not(:disabled) {
+  background: var(--csdrp-accent-hover, #006e52);
+}
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                              */
+/* ------------------------------------------------------------------ */
+
+.csDateRangePicker-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding: 12px 16px;
+  border-block-start: 1px solid var(--csdrp-divider, #e3e3e3);
+  /* Never let the footer make the popover wider than the calendars. */
+  inline-size: 0;
+  min-inline-size: 100%;
+}
+
+.csDateRangePicker-rangeDisplay {
+  font-variant-numeric: tabular-nums;
+}
+
+.csDateRangePicker-actions {
+  display: flex;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+
+.csDateRangePicker-primaryButton,
+.csDateRangePicker-secondaryButton {
+  min-block-size: 32px;
+  padding: 5px 12px;
+  font-weight: 500;
+  border-radius: var(--csdrp-radius, 8px);
+  cursor: pointer;
+}
+
+.csDateRangePicker-primaryButton {
+  color: var(--csdrp-primary-text, #ffffff);
+  background: var(--csdrp-primary, #303030);
+  border: 1px solid var(--csdrp-primary, #303030);
+}
+
+.csDateRangePicker-primaryButton:hover:not(:disabled) {
+  background: var(--csdrp-primary-hover, #1f1f1f);
+}
+
+.csDateRangePicker-primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.csDateRangePicker-secondaryButton {
+  color: var(--csdrp-text, #202223);
+  background: var(--csdrp-surface, #ffffff);
+  border: 1px solid var(--csdrp-border, #c9cccf);
+}
+
+.csDateRangePicker-secondaryButton:hover {
+  background: var(--csdrp-surface-hover, #f6f6f7);
+}
+
+/* ------------------------------------------------------------------ */
+/* Compact layout (chosen automatically when the wide one doesn't fit) */
+/* ------------------------------------------------------------------ */
+
+.csDateRangePicker-popoverCompact {
+  --csdrp-_cell: clamp(
+    28px,
+    calc((100vw - 52px) / 7),
+    var(--csdrp-cell-size, 36px)
+  );
+}
+
+.csDateRangePicker-popoverCompact .csDateRangePicker-content {
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.csDateRangePicker-popoverCompact .csDateRangePicker-presets {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+  /* Wrap within the calendar width instead of widening the popover. */
+  inline-size: 0;
+  min-inline-size: 100%;
+  padding-inline-end: 0;
+  padding-block-end: 12px;
+  border-inline-end: 0;
+  border-block-end: 1px solid var(--csdrp-divider, #e3e3e3);
+}
+
+.csDateRangePicker-popoverCompact .csDateRangePicker-preset {
+  padding: 4px 10px;
+  border: 1px solid var(--csdrp-divider, #e3e3e3);
+  border-radius: 999px;
+}
+
+.csDateRangePicker-popoverCompact .csDateRangePicker-presetActive {
+  border-color: var(--csdrp-accent, #008060);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .csDateRangePicker-day,
+  .csDateRangePicker-preset {
+    transition: background-color 80ms ease;
+  }
+}
